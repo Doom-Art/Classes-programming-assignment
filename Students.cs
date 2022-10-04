@@ -26,9 +26,12 @@ namespace Classes_programming_assignment
                 this._email += _firstName;
             else
                 this._email += _firstName.Substring(0, 3);
+
             if (_lastName.Length < 3)
                 this._email += _lastName;
-            this._email +=  _lastName.Substring(0, 3) + Convert.ToString(_studentNumber).Substring(3, 3) + "@ICS4U.com";
+            else
+                this._email += _lastName.Substring(0, 3);
+            this._email += Convert.ToString(_studentNumber).Substring(3, 3) + "@ICS4U.com";
         }
         public void ResetStudentNumber()
         {
@@ -76,6 +79,13 @@ namespace Classes_programming_assignment
         public override string ToString()
         {
             return _firstName + " " + _lastName;
+        }
+        public override bool Equals(object obj)
+        {
+            Students student = obj as Students; 
+            if (student == null) 
+                return false;
+            return this._firstName == student.FirstName && this._lastName == student.LastName && this._studentNumber == student.StudentNumber;
         }
     }
     
