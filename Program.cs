@@ -13,7 +13,16 @@ namespace Classes_programming_assignment
             listOfStudents.Add(new Students("Kian", "Dufraimont"));
             listOfStudents.Add(new Students("Quinese", "Laurenze"));
             listOfStudents.Add(new Students("John", "Doe"));
-
+            
+            for (int i = 0; i < listOfStudents.Count; i++)
+            {
+                foreach (Students person in listOfStudents)
+                {
+                    if (listOfStudents[i].StudentNumber == person.StudentNumber && person != listOfStudents[i])
+                        person.ResetStudentNumber();
+                }
+            }
+            
             int choice = 0;
             while (choice != 8)
             {
@@ -29,8 +38,7 @@ namespace Classes_programming_assignment
                 Console.WriteLine("8 - Quit");
                 Int32.TryParse(Console.ReadLine(), out choice);
 
-                if (choice == 1)
-                {
+                if (choice == 1){
                     Console.Clear();
                     Console.WriteLine("Here are the students: \n");
                     foreach (Students person in listOfStudents)
@@ -51,8 +59,7 @@ namespace Classes_programming_assignment
                 else if (choice == 7) { }
                 else if (choice == 8)
                     Console.WriteLine("Goodbye");
-                else
-                {
+                else{
                     Console.WriteLine("Invalid choice, press ENTER to continue.");
                     Console.ReadLine();
                     Console.Clear();
@@ -62,7 +69,75 @@ namespace Classes_programming_assignment
         }
         public static void RemoveStudent(List<Students> listStudent)
         {
+            Console.Clear();
+            int choice = 0;
+            while (choice == 0)
+            {
+                Console.WriteLine("How would you like to select the student to remove?");
+                Console.WriteLine("1 - By Index");
+                Console.WriteLine("2 - By Student Number");
+                Console.WriteLine("3 - By Full Name (If more than one will remove all)");
+                Int32.TryParse(Console.ReadLine(), out choice);
+                if (choice != 1 && choice != 2 && choice != 3)
+                {
+                    choice = 0;
+                    Console.WriteLine("Invalid choice, press ENTER to continue.");
+                    Console.ReadLine();
+                    Console.Clear();
+                }
+            }
+            Console.Clear();
+            if (choice == 1){
+                for (int i = 0; i<listStudent.Count; i++)
+                {
+                    Console.WriteLine($"{i+1} - {listStudent[i]}");
+                }
+                Console.WriteLine();
+                bool loop = false;
+                int indexRemove = -1;
+                while (!loop)
+                {
+                    Console.WriteLine("\nWhich student index would you like to remove?");
+                    loop = Int32.TryParse(Console.ReadLine(), out indexRemove);
+                    if (!loop)
+                    {
+                        Console.WriteLine("This is an Invalid Guess");
+                    }
+                    else if (indexRemove <1 || indexRemove > listStudent.Count){
+                        loop = false;
+                        Console.WriteLine("This is an invalid Number please try again");
+                    }
+                }
+                indexRemove -= 1;
+                Console.WriteLine($"The student {listStudent[indexRemove]} was removed at index {indexRemove+1}");
+                listStudent.RemoveAt(indexRemove);
+            }
+            else if (choice == 2)
+            {
+                foreach (Students person in listStudent)
+                {
+                    Console.WriteLine($"Name: {person}, Student Number: {person.StudentNumber}");
+                }
+                Console.WriteLine();
+                bool loop = false;
+                int indexRemove = -1;
+                while (!loop)
+                {
+                    Console.WriteLine("\nWhich student number would you like to remove?");
+                    loop = Int32.TryParse(Console.ReadLine(), out indexRemove);
+                    if (indexRemove < 1 || indexRemove > listStudent.Count)
+                    {
+                        loop = false;
+                        Console.WriteLine("This is an invalid Number please try again");
+                    }
+                }
+                indexRemove -= 1;
+                Console.WriteLine($"The student {listStudent[indexRemove]} was removed at index {indexRemove + 1}");
+                listStudent.RemoveAt(indexRemove);
+            }
 
+            Console.WriteLine("\nPress enter to return to the Menu");
+            Console.ReadLine();
         }
         public static void AddAStudent(List<Students> list)
         {
@@ -155,7 +230,7 @@ namespace Classes_programming_assignment
                     }
                 }
             }
-            if (choice == 2){
+            else if (choice == 2){
                 string lName = "";
                 while (lName == "")
                 {
@@ -190,7 +265,7 @@ namespace Classes_programming_assignment
                     }
                 }
             }
-            if (choice == 3){
+            else if (choice == 3){
                 string fName = "";
                 while (fName == "")
                 {
