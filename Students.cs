@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Classes_programming_assignment
 {
-    internal class Students
+    internal class Students 
     {
         private static Random rand = new Random();
         private string _firstName;
@@ -86,6 +86,10 @@ namespace Classes_programming_assignment
             if (student == null) 
                 return false;
             return this._firstName == student.FirstName && this._lastName == student.LastName && this._studentNumber == student.StudentNumber;
+        }
+        public override int GetHashCode()
+        {
+            return (_firstName + _lastName + _studentNumber).GetHashCode();
         }
     }
     
