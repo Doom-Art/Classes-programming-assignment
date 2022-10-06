@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -58,7 +59,7 @@ namespace Classes_programming_assignment
                 else if (choice == 4)
                     RemoveStudent(listOfStudents);
                 else if (choice == 5)
-                    StudentDetails(listOfStudents);
+                    StudentSearch(listOfStudents);
                 else if (choice == 6)
                     EditStudent(listOfStudents);
                 else if (choice == 7)
@@ -267,118 +268,144 @@ namespace Classes_programming_assignment
             }
             Console.Clear();
             if (choice == 1){
-                string fName = "";
-                while (fName == "")
-                {
-                    Console.WriteLine("What is the students First Name?");
-                    fName = Console.ReadLine();
-                    if (fName == "")
-                        Console.WriteLine("This is not a valid First Name");
-                }
-                fName = char.ToUpper(fName[0]) + fName.Substring(1).ToLower();
+                Console.WriteLine("What is the students First Name?");
+                string fName = Console.ReadLine().Trim().ToUpper();
                 int count = 0;
                 bool occured = false;
-                while (true)
+                bool end = true;
+                Console.Clear();
+                while (end)
                 {
                     int indexOfStudent = -1;
-                    for (int i = count; i<list.Count; i++)
+                    for (int i = count; i < list.Count; i++)
                     {
-                        if (list[i].FirstName == fName){
+                        if ((list[i].FirstName.ToUpper()) == fName){
                             indexOfStudent = i;
-                            occured = true;
-                            count = i+1;
+                            count = i + 1;
                             break;
                         }
                     }
                     if (indexOfStudent == -1 && !occured){
                         Console.WriteLine("We couldnt find that first name in the database");
-                        break;
+                        end = false;
                     }
-                    else if(indexOfStudent == -1 && occured)
-                        break;
+                    else if (indexOfStudent == -1 && occured)
+                        end = false;
                     else{
+                        if (!occured){
+                            Console.WriteLine("Here are all the students with that first name: \n");
+                            occured = true;
+                        }
                         Console.WriteLine($"Name: {list[indexOfStudent]} \nEmail: {list[indexOfStudent].Email} \nStudent Number: {list[indexOfStudent].StudentNumber}\n");
                     }
                 }
             }
             else if (choice == 2){
-                string lName = "";
-                while (lName == "")
-                {
-                    Console.WriteLine("What is the students Last Name?");
-                    lName = Console.ReadLine();
-                    if (lName == "")
-                        Console.WriteLine("This is not a valid Last Name");
-                }
-                lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
+                Console.WriteLine("What is the students Last Name?");
+                string lName = Console.ReadLine().Trim().ToUpper();
                 int count = 0;
                 bool occured = false;
-                while (true)
+                bool end = true;
+                Console.Clear();
+                while (end)
                 {
                     int indexOfStudent = -1;
                     for (int i = count; i < list.Count; i++)
                     {
-                        if (list[i].LastName == lName){
+                        if ((list[i].LastName.ToUpper()) == lName){
                             indexOfStudent = i;
-                            occured = true;
                             count = i + 1;
                             break;
                         }
                     }
                     if (indexOfStudent == -1 && !occured){
                         Console.WriteLine("We couldnt find that last name in the database");
-                        break;
+                        end = false;
                     }
                     else if (indexOfStudent == -1 && occured)
-                        break;
+                        end = false;
                     else{
+                        if (!occured){
+                            Console.WriteLine("Here are all the students with that last name: \n");
+                            occured = true;
+                        }
                         Console.WriteLine($"Name: {list[indexOfStudent]} \nEmail: {list[indexOfStudent].Email} \nStudent Number: {list[indexOfStudent].StudentNumber}\n");
                     }
                 }
             }
             else if (choice == 3){
-                string fName = "";
-                while (fName == "")
-                {
-                    Console.WriteLine("What is the students First Name?");
-                    fName = Console.ReadLine();
-                    if (fName == "")
-                        Console.WriteLine("This is not a valid First Name");
-                }
-                fName = char.ToUpper(fName[0]) + fName.Substring(1).ToLower();
+                Console.WriteLine("What is the students First Name?");
+                string fName = Console.ReadLine().Trim().ToUpper();
                 Console.Clear();
-                string lName = "";
-                while (lName == "")
-                {
-                    Console.WriteLine("What is the students Last Name?");
-                    lName = Console.ReadLine();
-                    if (lName == "")
-                        Console.WriteLine("This is not a valid Last Name");
-                }
-                lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
+                Console.WriteLine("What is the students Last Name?");
+                string lName = Console.ReadLine().Trim().ToUpper();
+                Console.Clear();
                 int count = 0;
                 bool occured = false;
-                while (true)
+                bool end = true;
+                while (end)
                 {
                     int indexOfStudent = -1;
                     for (int i = count; i < list.Count; i++)
                     {
-                        if (list[i].LastName == lName && list[i].FirstName == fName){
+                        if ((list[i].LastName.ToUpper()) == lName && list[i].FirstName.ToUpper() == fName){
                             indexOfStudent = i;
-                            occured = true;
                             count = i + 1;
                             break;
                         }
                     }
                     if (indexOfStudent == -1 && !occured){
                         Console.WriteLine("We couldnt find that name in the database");
-                        break;
+                        end = false;
                     }
                     else if (indexOfStudent == -1 && occured)
-                        break;
+                        end = false;
                     else{
+                        if (!occured){
+                            Console.WriteLine("Here are all the students with that name: \n");
+                            occured = true;
+                        }
                         Console.WriteLine($"Name: {list[indexOfStudent]} \nEmail: {list[indexOfStudent].Email} \nStudent Number: {list[indexOfStudent].StudentNumber}\n");
                     }
+                }
+            }
+            Console.WriteLine("Press enter to return to the main menu");
+            Console.ReadLine();
+        }
+        public static void StudentSearch(List<Students> list)
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome to student Search! \nYou can enter part of any students first name or last name to search for.");
+            Console.WriteLine("After Searching for all students who match the criteria of the searched name they will have their info printed.");
+            string fName = "";
+            Console.WriteLine("Please search for a name?");
+            fName = Console.ReadLine().Trim().ToUpper();
+            int count = 0;
+            bool occured = false;
+            bool end = true;
+            while (end)
+            {
+                int indexOfStudent = -1;
+                for (int i = count; i < list.Count; i++)
+                {
+                    if ((list[i].FirstName.ToUpper()).Contains(fName) || list[i].LastName.ToUpper().Contains(fName)){
+                        indexOfStudent = i;
+                        count = i + 1;
+                        break;
+                    }
+                }
+                if (indexOfStudent == -1 && !occured){
+                    Console.WriteLine("We couldnt find any names that match your criteria in the database");
+                    end = false;
+                }
+                else if (indexOfStudent == -1 && occured)
+                    end = false;
+                else{
+                    if (!occured){
+                        Console.WriteLine("Here are all the names that match your criteria: \n");
+                        occured = true;
+                    }
+                    Console.WriteLine($"Name: {list[indexOfStudent]} \nEmail: {list[indexOfStudent].Email} \nStudent Number: {list[indexOfStudent].StudentNumber}\n");
                 }
             }
             Console.WriteLine("Press enter to return to the main menu");
