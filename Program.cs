@@ -61,7 +61,8 @@ namespace Classes_programming_assignment
                     StudentDetails(listOfStudents);
                 else if (choice == 6)
                     EditStudent(listOfStudents);
-                else if (choice == 7) { }
+                else if (choice == 7)
+                    BubbleSort(listOfStudents);
                 else if (choice == 8)
                     Console.WriteLine("Goodbye");
                 else{
@@ -386,18 +387,18 @@ namespace Classes_programming_assignment
         public static void EditStudent(List<Students> listStudent)
         {
             Console.Clear();
-            for (int i = 0; i < listStudent.Count; i++)
-            {
-                Console.WriteLine($"{i + 1} - {listStudent[i]}");
-            }
-            Console.WriteLine();
-            int indexRemove;
-            while (true)
+            int indexRemove = 0;
+            bool continueTo = true;
+            while (continueTo)
             {
                 bool loop = false;
                 indexRemove = -1;
                 while (!loop)
                 {
+                    for (int i = 0; i < listStudent.Count; i++)
+                    {
+                        Console.WriteLine($"{i + 1} - {listStudent[i]}");
+                    }
                     Console.WriteLine("\nWhich student index would you like to edit?");
                     loop = Int32.TryParse(Console.ReadLine(), out indexRemove);
                     if (!loop){
@@ -407,11 +408,13 @@ namespace Classes_programming_assignment
                         loop = false;
                         Console.WriteLine("This is an invalid Number please try again");
                     }
+                    Thread.Sleep(700);
+                    Console.Clear();
                 }
-                Console.WriteLine($"\nYou have selected student: {listStudent[indexRemove-1]} \nIs this the student you wish to edit?\n'Y' or 'N'");
+                Console.WriteLine($"You have selected student: {listStudent[indexRemove-1]} \nIs this the student you wish to edit?\n'Y' or 'N'");
                 string correct = Console.ReadLine().ToUpper().Trim();
                 if (correct == "Y")
-                    break;
+                    continueTo = false;
                 Console.Clear();
             }
             indexRemove -= 1;
@@ -430,6 +433,7 @@ namespace Classes_programming_assignment
                     Console.Clear();
                 }
             }
+            Students tempStudent = listStudent[indexRemove];
             if (choice == 1){
                 string fName = "";
                 while (fName == "")
@@ -442,6 +446,7 @@ namespace Classes_programming_assignment
                 fName = char.ToUpper(fName[0]) + fName.Substring(1).ToLower();
                 Console.Clear();
                 listStudent[indexRemove].FirstName = fName;
+                Console.WriteLine($"The Name {tempStudent} has been changed to {listStudent[indexRemove]}");
             }
             else if (choice == 2){
                 string lName = "";
@@ -455,9 +460,11 @@ namespace Classes_programming_assignment
                 lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
                 Console.Clear();
                 listStudent[indexRemove].LastName = lName;
+                Console.WriteLine($"The Name {tempStudent} has been changed to {listStudent[indexRemove]}");
             }
             else if(choice == 3){
                 bool exists = true;
+                int tempNum = listStudent[indexRemove].StudentNumber;
                 listStudent[indexRemove].ResetStudentNumber();
                 while (exists)
                 {
@@ -470,7 +477,51 @@ namespace Classes_programming_assignment
                         }
                     }
                 }
+                Console.WriteLine($"The student number {tempNum} has been changed to {listStudent[indexRemove].StudentNumber}");
             }
+            Console.WriteLine("Press enter to return to the main menu");
+            Console.ReadLine();
+        }
+        public static void BubbleSort(List<Students> arr)
+        {
+            Console.Clear();
+            Console.WriteLine("How would you like to sort the List? \n1 - By Student Number \n2 - By Last Name");
+            bool correct = Int32.TryParse(Console.ReadLine(), out int type);
+            if (!correct)
+                Console.WriteLine("You did not enter a valid option so we will just sort by Last Name");
+            if (type == 1){
+                int temp = 0;
+                for (int j = 0; j < arr.Count - 1; j++)
+                {
+                    for (int i = 0; i < arr.Count - 1; i++)
+                    {
+                        if (arr[i].StudentNumber == arr[i + 1].StudentNumber){
+                            temp = arr[i + 1].StudentNumber;
+                            arr[i + 1].SpecifyStudentNumber = arr[i].StudentNumber;
+                            arr[i].SpecifyStudentNumber = temp;
+                        }
+                    }
+                }
+                Console.Clear();
+                Console.WriteLine("Here is the sorted list of students: \n");
+                foreach (Students person in arr)
+                {
+                    Console.WriteLine($"{person}, {person.StudentNumber}");
+                }
+            }
+            else
+            {
+                arr.Sort();
+                Console.Clear();
+                Console.WriteLine("Here is the sorted list of students: \n");
+                foreach (Students person in arr)
+                {
+                    Console.WriteLine(person);
+                }
+            }
+            Console.WriteLine("\nPress enter to return to the menu");
+            Console.ReadLine();
+
         }
     }
 }

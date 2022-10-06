@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Classes_programming_assignment
 {
-    internal class Students 
+    internal class Students : IComparable<Students>
     {
         private static Random rand = new Random();
         private string _firstName;
@@ -69,6 +69,13 @@ namespace Classes_programming_assignment
                 return _studentNumber;
             }
         }
+        public int SpecifyStudentNumber
+        {
+            set
+            {
+                this._studentNumber = value;
+            }
+        }
         public string Email
         {
             get
@@ -90,6 +97,13 @@ namespace Classes_programming_assignment
         public override int GetHashCode()
         {
             return (_firstName + _lastName + _studentNumber).GetHashCode();
+        }
+        public int CompareTo(Students that)
+        {
+            if (this.LastName.CompareTo(that.LastName) == 0)
+                return this.FirstName.CompareTo(that.FirstName);
+            else
+                return this.LastName.CompareTo(that.LastName);
         }
     }
     
