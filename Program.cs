@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Classes_programming_assignment
 {
@@ -57,7 +59,8 @@ namespace Classes_programming_assignment
                     RemoveStudent(listOfStudents);
                 else if (choice == 5)
                     StudentDetails(listOfStudents);
-                else if (choice == 6) { }
+                else if (choice == 6)
+                    EditStudent(listOfStudents);
                 else if (choice == 7) { }
                 else if (choice == 8)
                     Console.WriteLine("Goodbye");
@@ -79,8 +82,7 @@ namespace Classes_programming_assignment
                 Console.WriteLine("2 - By Student Number");
                 Console.WriteLine("3 - By Full Name (If more than one will remove all)");
                 Int32.TryParse(Console.ReadLine(), out choice);
-                if (choice != 1 && choice != 2 && choice != 3)
-                {
+                if (choice != 1 && choice != 2 && choice != 3){
                     choice = 0;
                     Console.WriteLine("Invalid choice, press ENTER to continue.");
                     Console.ReadLine();
@@ -210,7 +212,7 @@ namespace Classes_programming_assignment
             while (fName == "")
             {
                 Console.WriteLine("Please enter the students First Name?");
-                fName = Console.ReadLine();
+                fName = Console.ReadLine().Trim();
                 if (fName == "")
                     Console.WriteLine("This is not a valid First Name");
             }
@@ -220,15 +222,16 @@ namespace Classes_programming_assignment
             while (lName == "")
             {
                 Console.WriteLine("Please enter the students Last Name?");
-                lName = Console.ReadLine();
+                lName = Console.ReadLine().Trim();
                 if (lName == "")
                     Console.WriteLine("This is not a valid Last Name");
             }
             lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
             Students person = new Students(fName, lName);
-            while (true)
+            bool exists = true;
+            while (exists)
             {
-                bool exists = false;
+                exists = false;
                 foreach (Students student in list)
                 {
                     if (person.Equals(student)){
@@ -236,8 +239,6 @@ namespace Classes_programming_assignment
                         person.ResetStudentNumber();
                     }
                 }
-                if (!exists)
-                    break;
             }
             list.Add(person);
             Console.WriteLine($"The student {person} has been added");
@@ -399,12 +400,10 @@ namespace Classes_programming_assignment
                 {
                     Console.WriteLine("\nWhich student index would you like to edit?");
                     loop = Int32.TryParse(Console.ReadLine(), out indexRemove);
-                    if (!loop)
-                    {
+                    if (!loop){
                         Console.WriteLine("This is an Invalid Choice");
                     }
-                    else if (indexRemove < 1 || indexRemove > listStudent.Count)
-                    {
+                    else if (indexRemove < 1 || indexRemove > listStudent.Count){
                         loop = false;
                         Console.WriteLine("This is an invalid Number please try again");
                     }
@@ -413,13 +412,65 @@ namespace Classes_programming_assignment
                 string correct = Console.ReadLine().ToUpper().Trim();
                 if (correct == "Y")
                     break;
-                else{
+                Console.Clear();
+            }
+            indexRemove -= 1;
+            int choice = 0;
+            while (choice == 0)
+            {
+                Console.WriteLine("What would you like to edit?");
+                Console.WriteLine("1 - First Name");
+                Console.WriteLine("2 - Last Name");
+                Console.WriteLine("3 - New Student Number");
+                Int32.TryParse(Console.ReadLine(), out choice);
+                if (choice != 1 && choice != 2 && choice != 3){
+                    choice = 0;
+                    Console.WriteLine("Invalid choice, press ENTER to continue.");
+                    Console.ReadLine();
                     Console.Clear();
                 }
             }
-            indexRemove -= 1;
-            Console.WriteLine($"The student {listStudent[indexRemove]} was removed at index {indexRemove + 1}");
-            listStudent.RemoveAt(indexRemove);
+            if (choice == 1){
+                string fName = "";
+                while (fName == "")
+                {
+                    Console.WriteLine("Please enter the students First Name?");
+                    fName = Console.ReadLine().Trim();
+                    if (fName == "")
+                        Console.WriteLine("This is not a valid First Name");
+                }
+                fName = char.ToUpper(fName[0]) + fName.Substring(1).ToLower();
+                Console.Clear();
+                listStudent[indexRemove].FirstName = fName;
+            }
+            else if (choice == 2){
+                string lName = "";
+                while (lName == "")
+                {
+                    Console.WriteLine("Please enter the students Last Name?");
+                    lName = Console.ReadLine().Trim();
+                    if (lName == "")
+                        Console.WriteLine("This is not a valid First Name");
+                }
+                lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
+                Console.Clear();
+                listStudent[indexRemove].LastName = lName;
+            }
+            else if(choice == 3){
+                bool exists = true;
+                listStudent[indexRemove].ResetStudentNumber();
+                while (exists)
+                {
+                    exists = false;
+                    foreach (Students student in listStudent)
+                    {
+                        if (listStudent[indexRemove].Equals(student)){
+                            exists = true;
+                            listStudent[indexRemove].ResetStudentNumber();
+                        }
+                    }
+                }
+            }
         }
     }
 }
