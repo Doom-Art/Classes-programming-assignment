@@ -17,7 +17,6 @@ namespace Classes_programming_assignment
             listOfStudents.Add(new Students("Kian", "Dufraimont"));
             listOfStudents.Add(new Students("Quinese", "Ross"));
             listOfStudents.Add(new Students("John", "Doe"));
-            
             for (int i = 0; i < listOfStudents.Count; i++)
             {
                 foreach (Students person in listOfStudents)
