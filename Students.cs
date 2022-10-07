@@ -20,6 +20,9 @@ namespace Classes_programming_assignment
             this._studentNumber = (rand.Next(0, 1000))+555000;
             GenerateEmail();
         }
+        /// <summary>
+        /// Generates an email adress based on Students firstName, lastName, and studentNumber
+        /// </summary>
         private void GenerateEmail(){
             this._email = "";
             if (_firstName.Length < 3)
@@ -33,6 +36,9 @@ namespace Classes_programming_assignment
                 this._email += _lastName.Substring(0, 3);
             this._email += Convert.ToString(_studentNumber).Substring(3, 3) + "@ICS4U.com";
         }
+        /// <summary>
+        /// generates a new randomized student number and a corresponding email.
+        /// </summary>
         public void ResetStudentNumber()
         {
             this._studentNumber = (rand.Next(0, 1000)) + 555000;
