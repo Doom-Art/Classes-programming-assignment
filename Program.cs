@@ -215,8 +215,10 @@ namespace Classes_programming_assignment
             {
                 Console.WriteLine("Please enter the students First Name?");
                 fName = Console.ReadLine().Trim();
-                if (fName == "")
+                if (fName == "" || fName.Contains(" ")){
                     Console.WriteLine("This is not a valid First Name");
+                    fName = "";
+                }
             }
             fName = char.ToUpper(fName[0]) + fName.Substring(1).ToLower();
             Console.Clear();
@@ -225,8 +227,10 @@ namespace Classes_programming_assignment
             {
                 Console.WriteLine("Please enter the students Last Name?");
                 lName = Console.ReadLine().Trim();
-                if (lName == "")
+                if (lName == "" || fName.Contains(" ")){
                     Console.WriteLine("This is not a valid Last Name");
+                    lName = "";
+                }
             }
             lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
             Students person = new Students(fName, lName);
@@ -236,7 +240,7 @@ namespace Classes_programming_assignment
                 exists = false;
                 foreach (Students student in list)
                 {
-                    if (person.Equals(student)){
+                    if (person.StudentNumber == student.StudentNumber){
                         exists = true;
                         person.ResetStudentNumber();
                     }
@@ -435,8 +439,6 @@ namespace Classes_programming_assignment
                         loop = false;
                         Console.WriteLine("This is an invalid Number please try again");
                     }
-                    Thread.Sleep(700);
-                    Console.Clear();
                 }
                 Console.WriteLine($"You have selected student: {listStudent[indexRemove-1]} \nIs this the student you wish to edit?\n'Y' or 'N'");
                 string correct = Console.ReadLine().ToUpper().Trim();
@@ -460,7 +462,7 @@ namespace Classes_programming_assignment
                     Console.Clear();
                 }
             }
-            Students tempStudent = listStudent[indexRemove];
+            Students tempStudent = new Students (listStudent[indexRemove].FirstName, listStudent[indexRemove].LastName);
             if (choice == 1){
                 string fName = "";
                 while (fName == "")
@@ -482,7 +484,7 @@ namespace Classes_programming_assignment
                     Console.WriteLine("Please enter the students Last Name?");
                     lName = Console.ReadLine().Trim();
                     if (lName == "")
-                        Console.WriteLine("This is not a valid First Name");
+                        Console.WriteLine("This is not a valid Last Name");
                 }
                 lName = char.ToUpper(lName[0]) + lName.Substring(1).ToLower();
                 Console.Clear();
@@ -498,7 +500,7 @@ namespace Classes_programming_assignment
                     exists = false;
                     foreach (Students student in listStudent)
                     {
-                        if (listStudent[indexRemove].Equals(student)){
+                        if (listStudent[indexRemove].StudentNumber == student.StudentNumber && student != listStudent[indexRemove]){
                             exists = true;
                             listStudent[indexRemove].ResetStudentNumber();
                         }
@@ -514,18 +516,18 @@ namespace Classes_programming_assignment
             Console.Clear();
             Console.WriteLine("How would you like to sort the List? \n1 - By Student Number \n2 - By Last Name");
             bool correct = Int32.TryParse(Console.ReadLine(), out int type);
-            if (!correct)
-                Console.WriteLine("You did not enter a valid option so we will just sort by Last Name");
-            if (type == 1){
-                int temp = 0;
+            if (!correct || (type != 1 && type != 2))
+                Console.WriteLine("You did not enter a valid option so we will just leave the list as is");
+            else if (type == 1){
+                Students temp;
                 for (int j = 0; j < arr.Count - 1; j++)
                 {
                     for (int i = 0; i < arr.Count - 1; i++)
                     {
-                        if (arr[i].StudentNumber == arr[i + 1].StudentNumber){
-                            temp = arr[i + 1].StudentNumber;
-                            arr[i + 1].SpecifyStudentNumber = arr[i].StudentNumber;
-                            arr[i].SpecifyStudentNumber = temp;
+                        if (arr[i].StudentNumber > arr[i + 1].StudentNumber){
+                            temp = arr[i + 1];
+                            arr[i + 1] = arr[i];
+                            arr[i]= temp;
                         }
                     }
                 }

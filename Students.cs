@@ -69,13 +69,6 @@ namespace Classes_programming_assignment
                 return _studentNumber;
             }
         }
-        public int SpecifyStudentNumber
-        {
-            set
-            {
-                this._studentNumber = value;
-            }
-        }
         public string Email
         {
             get
