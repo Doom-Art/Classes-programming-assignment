@@ -25,17 +25,18 @@ namespace Classes_programming_assignment
         /// </summary>
         private void GenerateEmail(){
             this._email = "";
-            if (_firstName.Length < 3)
+            if (this._firstName.Length < 3)
                 this._email += _firstName;
             else
                 this._email += _firstName.Substring(0, 3);
 
-            if (_lastName.Length < 3)
+            if (this._lastName.Length < 3)
                 this._email += _lastName;
             else
                 this._email += _lastName.Substring(0, 3);
             this._email += Convert.ToString(_studentNumber).Substring(3, 3) + "@ICS4U.com";
         }
+        
         /// <summary>
         /// generates a new randomized student number and a corresponding email.
         /// </summary>
